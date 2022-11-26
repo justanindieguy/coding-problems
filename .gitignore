@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# Compiled directories (Linux)
+bin/
+
 # Executables
 *.exe
 *.out
