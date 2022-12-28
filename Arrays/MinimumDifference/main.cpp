@@ -42,7 +42,7 @@ pair<int, int> minDiff(vector<int> arr1, vector<int> arr2)
 
     int n = arr1.size();
     int m = arr2.size();
-    int i, j = 0;
+    int i = 0, j = 0;
     while (i < n && j < m)
     {
         int diff = abs(arr1[i] - arr2[j]);
@@ -67,7 +67,7 @@ int main()
     vector<int> arr2{26, 134, 135, 14, 19};
 
     pair<int, int> minPair = minDiffBruteForce(arr1, arr2);
-    pair<int, int> minPairTwo = minDiffBruteForce(arr1, arr2);
+    pair<int, int> minPairTwo = minDiff(arr1, arr2);
 
     cout << minPair.first << ", " << minPair.second << endl;
     cout << minPairTwo.first << ", " << minPairTwo.second << endl;
