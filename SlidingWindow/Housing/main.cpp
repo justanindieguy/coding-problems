@@ -8,6 +8,7 @@
  * sum is exactly K.
  */
 #include <algorithm>
+#include <bits/stdc++.h>
 #include <iostream>
 #include <vector>
 
@@ -114,6 +115,35 @@ vector<pair<int, int>> housingSlidingWindow(vector<int> v, int k)
     return indices;
 }
 
+// Smallest Window that contains the required sum
+pair<int, int> housingSmallestWindow(vector<int> v, int k)
+{
+    int n = v.size();
+    int i = 0, j = 0, cs = 0, sd = INT_MAX;
+    pair<int, int> sw = {-1, -1};
+
+    while (j < n)
+    {
+        cs += v[j];
+        j++;
+
+        while (cs > k && i < j)
+        {
+            cs -= v[i];
+            i++;
+        }
+
+        int cd = j - i;
+        if (cs == k && cd < sd)
+        {
+            sd = cd;
+            sw = {i, j - 1};
+        }
+    }
+
+    return sw;
+}
+
 int main()
 {
     int k;
@@ -123,11 +153,8 @@ int main()
     // vector<int> ps = getPrefixSumArray(v);
 
     vector<int> v = {1, 3, 2, 1, 4, 1, 3, 2, 1, 1, 2};
-    vector<pair<int, int>> indices = housingSlidingWindow(v, k);
-    for (pair<int, int> p : indices)
-    {
-        cout << "(" << p.first << ", " << p.second << ")" << endl;
-    }
+    pair<int, int> sw = housingSmallestWindow(v, k);
+    cout << "(" << sw.first << ", " << sw.second << ")" << endl;
 
     return 0;
 }
