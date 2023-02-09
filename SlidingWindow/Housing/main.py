@@ -70,6 +70,27 @@ def housing_sliding_window(l: list[int], k: int):
     return indices
 
 
+def housing_smallest_window(l: list[int], k: int):
+    n = len(l)
+    i, j, cs, sd = 0, 0, 0, float("inf")
+    sw = (-1, -1)
+
+    while j < n:
+        cs += l[j]
+        j += 1
+
+        while cs > k and i < j:
+            cs -= l[i]
+            i += 1
+
+        cd = j - i
+        if cs == k and cd < sd:
+            sd = cd
+            sw = (i, j - 1)
+
+    return sw
+
+
 def main():
     k = int(input())
 
@@ -77,9 +98,8 @@ def main():
     # ps = get_prefix_sum_list(l)
 
     l = [1, 3, 2, 1, 4, 1, 3, 2, 1, 1, 2]
-    indices = housing_sliding_window(l, k)
-    for pair in indices:
-        print(pair)
+    sw = housing_smallest_window(l, k)
+    print(sw)
 
 
 if __name__ == "__main__":
