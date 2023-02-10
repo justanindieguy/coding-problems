@@ -144,17 +144,58 @@ pair<int, int> housingSmallestWindow(vector<int> v, int k)
     return sw;
 }
 
+vector<pair<int, int>> housingNegativeValues(vector<int> v, int k)
+{
+    int minVal = v[0];
+
+    for (int num : v)
+        minVal = min(num, minVal);
+
+    minVal = abs(minVal);
+
+    int n = v.size();
+    for (int i = 0; i < n; i++)
+        v[i] += minVal;
+
+    int cs = v[0];
+    int ts = k + minVal;
+    int i = 0, j = 1;
+    vector<pair<int, int>> indices;
+
+    while (j < n)
+    {
+        cs += v[j];
+        ts += minVal;
+        j++;
+
+        while (cs > ts && i < j)
+        {
+            cs -= v[i];
+            ts -= minVal;
+            i++;
+        }
+
+        if (cs == ts)
+            indices.push_back({i, j - 1});
+    }
+
+    return indices;
+}
+
 int main()
 {
     int k;
     cin >> k;
 
     // vector<int> v = {2, 1, 4, 1, 3, 2, 1, 1, 2, 1, 3};
+    // vector<int> v = {1, 3, 2, 1, 4, 1, 3, 2, 1, 1, 2};
     // vector<int> ps = getPrefixSumArray(v);
 
-    vector<int> v = {1, 3, 2, 1, 4, 1, 3, 2, 1, 1, 2};
-    pair<int, int> sw = housingSmallestWindow(v, k);
-    cout << "(" << sw.first << ", " << sw.second << ")" << endl;
+    vector<int> v = {1, -2, 2, -1, 4, 1, 3, -1, -3, 2, 1, 1, 2};
+    vector<pair<int, int>> indices = housingNegativeValues(v, k);
+
+    for (auto &&pair : indices)
+        cout << "(" << pair.first << ", " << pair.second << ")" << endl;
 
     return 0;
 }
