@@ -13,6 +13,7 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -52,12 +53,46 @@ string getLargestUniqueSubstring(string s)
     return largestSubstring;
 }
 
+// Sliding Window Approach - O(N)
+string getLargestUniqueSubstringSw(string s)
+{
+    int i = 0, j = 0;
+    int startWindow = -1, windowLength = 0, maxWindowLength = 0;
+    unordered_map<char, int> m = {};
+
+    while (j < s.size())
+    {
+        char ch = s[j];
+
+        // Check if it is inside hashmap and is in the current window.
+        if (m.count(ch) != 0 && m[ch] >= i)
+        {
+            i = m[ch] + 1;
+            windowLength = j - i; // Updated remaining window length excluding current char.
+        }
+
+        // Update the last occurrence.
+        m[ch] = j;
+        windowLength++;
+        j++;
+
+        // Update maxWindowLength at every step.
+        if (windowLength > maxWindowLength)
+        {
+            maxWindowLength = windowLength;
+            startWindow = i;
+        }
+    }
+
+    return s.substr(startWindow, maxWindowLength);
+}
+
 int main()
 {
     string s;
     cin >> s;
 
-    cout << getLargestUniqueSubstring(s) << endl;
+    cout << getLargestUniqueSubstringSw(s) << endl;
 
     return 0;
 }
