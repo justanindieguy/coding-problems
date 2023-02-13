@@ -18,9 +18,38 @@ def get_largest_unique_substring(s: str):
     return largest_substring
 
 
+# Sliding Window Approach - O(N)
+def get_largest_unique_substring_sw(s: str):
+    i, j = 0, 0
+    start_window, window_length, max_window_length = -1, 0, 0
+    occurrences = {}
+
+    while j < len(s):
+        ch = s[j]
+
+        # Check if is inside hashmap and is in the current window.
+        if ch in occurrences and occurrences[ch] >= i:
+            i = occurrences[ch] + 1
+            # Update remaining window length excluding current char.
+            window_length = j - i
+
+        # Update the last occurrence.
+        occurrences[ch] = j
+        window_length += 1
+        j += 1
+
+        # Update max_window_length at every step.
+        if window_length > max_window_length:
+            max_window_length = window_length
+            start_window = i
+
+    end_window = start_window + max_window_length
+    return s[start_window:end_window]
+
+
 def main():
     s = input()
-    print(get_largest_unique_substring(s))
+    print(get_largest_unique_substring_sw(s))
 
 
 if __name__ == "__main__":
