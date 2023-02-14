@@ -75,6 +75,63 @@ string findWindowBruteForce(string s2, vector<string> substrings)
     return smallestSubstring;
 }
 
+string findWindowSlidingWindow(string str, string pattern)
+{
+    // Array as Frequency Map (unordered_map can be used too).
+    int freqPattern[256] = {0};
+    int freqString[256] = {0};
+
+    for (int i = 0; i < pattern.size(); i++)
+    {
+        freqPattern[pattern[i]]++;
+    }
+
+    // Sliding Window Algorithm
+    int cnt = 0;
+    int start = 0;     // Left contracting
+    int startIdx = -1; // Start Index for best window
+    int minSoFar = INT_MAX;
+    int windowSize = 0;
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        // Expand the window by including current character.
+        char ch = str[i];
+        freqString[ch]++;
+
+        // Count how many characters have been matched 'till now (string and pattern).
+        if (freqPattern[ch] != 0 && freqString[ch] <= freqPattern[ch])
+        {
+            cnt++;
+        }
+
+        // If all characters of the pattern are found in the current window then you can start contracting.
+        if (cnt == pattern.size())
+        {
+            // Start contracting from the left to remove unwanted characters
+            while (freqPattern[str[start]] == 0 || freqString[str[start]] > freqPattern[str[start]])
+            {
+                freqString[str[start]]--;
+                start++;
+            }
+
+            windowSize = i - start + 1;
+            if (windowSize < minSoFar)
+            {
+                minSoFar = windowSize;
+                startIdx = start;
+            }
+        }
+    }
+
+    if (startIdx == -1)
+    {
+        return "No window found!";
+    }
+
+    return str.substr(startIdx, minSoFar);
+}
+
 int main()
 {
     string s1;
@@ -83,8 +140,8 @@ int main()
     string s2;
     cin >> s2;
 
-    vector<string> substrings = getSubstrings(s1);
-    cout << findWindowBruteForce(s2, substrings) << endl;
+    // vector<string> substrings = getSubstrings(s1);
+    cout << findWindowSlidingWindow(s1, s2) << endl;
 
     return 0;
 }
