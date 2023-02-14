@@ -4,12 +4,10 @@ def has_unique_characters(s: str):
 
 # Brute-Force Approach - O(N^3)
 def get_largest_unique_substring(s: str):
-    chars = list(s)
-
     largest_substring = ""
-    for i, char1 in enumerate(chars):
-        for j, char2 in enumerate(chars[i:], start=i):
-            substring = "".join(chars[i:j+1])
+    for i, char1 in enumerate(s):
+        for j, char2 in enumerate(s[i:], start=i):
+            substring = s[i:j+1]
             is_larger = len(substring) > len(largest_substring)
 
             if has_unique_characters(substring) and is_larger:
@@ -49,7 +47,7 @@ def get_largest_unique_substring_sw(s: str):
 
 def main():
     s = input()
-    print(get_largest_unique_substring_sw(s))
+    print(get_largest_unique_substring(s))
 
 
 if __name__ == "__main__":
