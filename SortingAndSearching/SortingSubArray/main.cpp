@@ -74,7 +74,7 @@ pair<int, int> subArraySortingLinear(vector<int> v)
     int start = -1,
         currMin = v[n];
 
-    for (int i = n - 2; i >= 0; i--)
+    for (int i = n - 1; i >= 0; i--)
     {
         if (v[i] > currMin)
         {
