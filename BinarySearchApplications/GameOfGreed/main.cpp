@@ -30,21 +30,21 @@
 
 using namespace std;
 
-bool divideAmongK(vector<int> v, int n, int k, int minCoins)
+bool divideAmongK(vector<int> v, int k, int minCoins)
 {
     int friendsCovered = 0,
         currentFriend = 0;
 
-    for (int i = 0; i < n; i++)
+    for (int coins : v)
     {
-        if (currentFriend + v[i] >= minCoins)
+        if (currentFriend + coins >= minCoins)
         {
             friendsCovered += 1;
             currentFriend = 0;
         }
         else
         {
-            currentFriend += v[i];
+            currentFriend += coins;
         }
     }
 
@@ -67,7 +67,7 @@ int binarySearchApproach(vector<int> v, int k)
     while (start <= end)
     {
         int mid = (start + end) / 2;
-        bool isPossible = divideAmongK(v, n, k, mid);
+        bool isPossible = divideAmongK(v, k, mid);
 
         if (isPossible)
         {
