@@ -1,4 +1,4 @@
-def divide_among_k(l: list[int], n: int, k: int, min_coins: int):
+def divide_among_k(l: list[int], k: int, min_coins: int):
     friends_covered = 0
     current_friend = 0
 
@@ -13,13 +13,12 @@ def divide_among_k(l: list[int], n: int, k: int, min_coins: int):
 
 
 def binary_search_approach(l: list[int], k: int):
-    n = len(l)
     start, end = min(l), sum(l)
 
     ans = 0
     while start <= end:
         mid = (start + end) // 2
-        is_possible = divide_among_k(l, n, k, mid)
+        is_possible = divide_among_k(l, k, mid)
 
         if is_possible:
             start = mid + 1
