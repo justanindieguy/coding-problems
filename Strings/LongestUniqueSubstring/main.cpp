@@ -44,28 +44,26 @@ int bruteForceApproach(string s)
 int linearApproach(string s)
 {
     int n = s.size(),
-        leftBound = 0, rightBound,
-        maxWindowSize = 0;
+        leftBound = 0,
+        maxLength = 0;
 
-    int freqMap[255] = {};
+    unordered_map<char, int> charMap = {};
 
-    for (rightBound = 0; rightBound < n; rightBound++)
+    for (int rightBound = 0; rightBound < n; rightBound++)
     {
-        char currentChar = s[rightBound];
-        freqMap[currentChar]++;
-
-        while (freqMap[currentChar] > 1)
+        if (charMap.count(s[rightBound]) == 0 || charMap[s[rightBound]] < leftBound)
         {
-            char leftChar = s[leftBound];
-            freqMap[leftChar]--;
-            leftBound++;
+            charMap[s[rightBound]] = rightBound;
+            maxLength = max(maxLength, (rightBound - leftBound) + 1);
         }
-
-        int windowSize = (rightBound - leftBound) + 1;
-        maxWindowSize = max(maxWindowSize, windowSize);
+        else
+        {
+            leftBound = charMap[s[rightBound]] + 1;
+            charMap[s[rightBound]] = rightBound;
+        }
     }
 
-    return maxWindowSize;
+    return maxLength;
 }
 
 int setApproach(string s)
