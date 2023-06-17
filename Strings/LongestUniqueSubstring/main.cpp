@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -67,6 +68,36 @@ int linearApproach(string s)
     return maxWindowSize;
 }
 
+int setApproach(string s)
+{
+    int n = s.length(),
+        leftBound = 0,
+        maxLength = 0;
+
+    unordered_set<char> charSet;
+
+    for (int rightBound = 0; rightBound < n; rightBound++)
+    {
+        if (charSet.count(s[rightBound]) == 0)
+        {
+            charSet.insert(s[rightBound]);
+            maxLength = max(maxLength, (rightBound - leftBound) + 1);
+        }
+        else
+        {
+            while (charSet.count(s[rightBound]))
+            {
+                charSet.erase(s[leftBound]);
+                leftBound++;
+            }
+
+            charSet.insert(s[rightBound]);
+        }
+    }
+
+    return maxLength;
+}
+
 int main()
 {
     string s = "abcad";
@@ -75,6 +106,7 @@ int main()
 
     cout << bruteForceApproach(s) << endl;
     cout << linearApproach(s) << endl;
+    cout << setApproach(s) << endl;
 
     return 0;
 }
