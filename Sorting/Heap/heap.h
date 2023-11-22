@@ -12,15 +12,24 @@ private:
     vector<int> heap;
 
 public:
-    Heap(vector<int> v)
+    Heap(vector<int> v, bool fastCreation)
     {
         heap = v;
-        createFromArray();
+
+        if (fastCreation)
+        {
+            heapify();
+        }
+        else
+        {
+            createOneByOne();
+        }
     }
 
     void insert(int i);
     int remove(int i);
-    void createFromArray();
+    void createOneByOne();
+    void heapify();
     void heapSort();
     void print();
 };
@@ -51,7 +60,7 @@ int Heap::remove(int lastInHeapIdx)
 
     heap[0] = x; // Bring last ordered element to the root
 
-    while (j < lastInHeapIdx - 1)
+    while (j < lastInHeapIdx)
     {
         // If right children is greater, take it as j
         if (heap[j + 1] > heap[j])
@@ -76,7 +85,7 @@ int Heap::remove(int lastInHeapIdx)
     return temp;
 }
 
-void Heap::createFromArray()
+void Heap::createOneByOne()
 {
     int n = heap.size();
 
@@ -88,6 +97,47 @@ void Heap::createFromArray()
     for (int i = 0; i < n; i++)
     {
         insert(i);
+    }
+}
+
+void Heap::heapify()
+{
+    int n = heap.size();
+
+    if (n <= 1)
+    {
+        return;
+    }
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int child = i * 2 + 1; // Left child
+
+        // No left child, nor right child.
+        if (child >= n)
+        {
+            continue;
+        }
+
+        int parent = i;
+        while (child < n)
+        {
+            if (child + 1 < n && heap[child + 1] > heap[child])
+            {
+                child++;
+            }
+
+            if (heap[parent] < heap[child])
+            {
+                swap(heap[parent], heap[child]);
+                parent = child;
+                child = parent * 2 + 1;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 }
 
