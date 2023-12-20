@@ -21,9 +21,12 @@
  *     [["a"]]
  */
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 
@@ -59,22 +62,82 @@ bool isAnagram(string s1, string s2)
     return true;
 }
 
+vector<vector<string>> groupAnagramsSquareTime(vector<string> &strs)
+{
+    vector<vector<string>> groupedAnagrams{};
+    unordered_set<int> groupedIdxs{};
+
+    int n = strs.size();
+    if (n == 0)
+    {
+        return {};
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (groupedIdxs.find(i) != groupedIdxs.end())
+        {
+            continue;
+        }
+
+        vector<string> currentGroup{};
+        currentGroup.push_back(strs[i]);
+        groupedIdxs.insert(i);
+
+        for (int j = i + 1; j < n; j++)
+        {
+            if (groupedIdxs.find(j) != groupedIdxs.end())
+            {
+                continue;
+            }
+
+            if (isAnagram(strs[i], strs[j]))
+            {
+                currentGroup.push_back(strs[j]);
+                groupedIdxs.insert(j);
+            }
+        }
+
+        groupedAnagrams.push_back(currentGroup);
+    }
+
+    return groupedAnagrams;
+}
+
+vector<vector<string>> groupAnagrams(vector<string> &strs)
+{
+    unordered_map<string, vector<string>> groupedAnagrams;
+
+    for (string &s : strs)
+    {
+        string sorted = s;
+        sort(sorted.begin(), sorted.end());
+        groupedAnagrams[sorted].push_back(s);
+    }
+
+    vector<vector<string>> result{};
+    for (auto &it : groupedAnagrams)
+    {
+        result.push_back(it.second);
+    }
+
+    return result;
+}
+
 int main()
 {
-    string s1;
-    cin >> s1;
+    vector<string> strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
 
-    string s2;
-    cin >> s2;
+    // vector<vector<string>> groupedAnagrams = groupAnagramsSquareTime(strs);
 
-    if (isAnagram(s1, s2))
+    vector<vector<string>> groupedAnagrams = groupAnagrams(strs);
+    for (vector<string> &group : groupedAnagrams)
     {
-        cout << "Anagram" << endl;
-    }
-    else
-    {
-        cout << "Not Anagram" << endl;
-    }
+        for (string &s : group)
+        {
+            cout << s << endl;
+        }
 
-    return 0;
+        cout << "-------------" << endl;
+    }
 }
