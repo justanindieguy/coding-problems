@@ -68,6 +68,10 @@ bool isValidSudokuSet(char board[][9])
             digit.insert(0, "[");
             digit.append("]");
 
+            //          Digit in row: [digit]row
+            //       Digit in column: column[digit]
+            // Digit in x,y sub-grid: x[digit]y
+
             if (
                 !seen.insert(digit + to_string(i)).second ||
                 !seen.insert(to_string(j) + digit).second ||
