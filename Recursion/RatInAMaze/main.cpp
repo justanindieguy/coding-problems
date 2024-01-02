@@ -31,10 +31,68 @@
  */
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
+int getCellNumber(int n, int i, int j)
+{
+    return n * i + j + 1;
+}
+
+bool traverseMaze(int n, vector<vector<char>> &maze, vector<int> &ans, int i = 0, int j = 0)
+{
+    int cell = getCellNumber(n, i, j);
+    ans.push_back(cell);
+
+    // Out of boundaries
+    if (i == n || j == n)
+    {
+        ans.pop_back();
+        return false;
+    }
+
+    // Rat has reached the exit
+    if (i == n - 1 && j == n - 1)
+    {
+        return true;
+    }
+
+    // If path is blocked, remove cell from path and return false
+    if (maze[i][j] == 'X')
+    {
+        ans.pop_back();
+        return false;
+    }
+
+    // First try to go to the bottom, then to the right
+    return traverseMaze(n, maze, ans, i + 1, j) || traverseMaze(n, maze, ans, i, j + 1);
+}
+
+vector<int> findPath(int n, vector<vector<char>> &maze)
+{
+    vector<int> ans = {};
+    traverseMaze(maze.size(), maze, ans);
+    return ans;
+}
+
 int main()
 {
+    vector<vector<char>> maze = {
+        {'O', 'O', 'X', 'O'},
+        {'O', 'X', 'O', 'O'},
+        {'O', 'O', 'O', 'X'},
+        {'X', 'X', 'O', 'O'},
+    };
+
+    vector<int> ans = findPath(maze.size(), maze);
+
+    for (int cell : ans)
+    {
+        cout << cell << " ";
+    }
+
+    cout << endl;
+
     return 0;
 }
