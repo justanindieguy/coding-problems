@@ -29,7 +29,7 @@
 
 using namespace std;
 
-int binarySearch(vector<int> &nums, int target)
+int searchInsert(vector<int> &nums, int target)
 {
     int start = 0, end = nums.size() - 1, mid = 0;
 
@@ -70,7 +70,7 @@ int main()
     int target;
     cin >> target;
 
-    cout << binarySearch(nums, target) << endl;
+    cout << searchInsert(nums, target) << endl;
 
     return 0;
 }
