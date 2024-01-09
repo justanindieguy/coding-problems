@@ -23,10 +23,34 @@
  */
 
 #include <iostream>
+#include <climits>
 
 using namespace std;
 
+int reverseInteger(int x)
+{
+    int reversedNumber = 0;
+    while (x)
+    {
+        int lastDigit = x % 10;
+        if (reversedNumber > INT_MAX / 10 || reversedNumber < INT_MIN / 10)
+        {
+            return 0;
+        }
+
+        reversedNumber = reversedNumber * 10 + lastDigit;
+        x /= 10;
+    }
+
+    return reversedNumber;
+}
+
 int main()
 {
+    int x;
+    cin >> x;
+
+    cout << reverseInteger(x) << endl;
+
     return 0;
 }
