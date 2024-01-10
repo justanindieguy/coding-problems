@@ -32,17 +32,34 @@ void printList(Node *head)
     cout << endl;
 }
 
-Node *reverseLinkedList(Node *head)
+Node *recursiveReverse(Node *head)
 {
     if (head == NULL || head->next == NULL)
     {
         return head;
     }
 
-    Node *newHead = reverseLinkedList(head->next);
+    Node *newHead = recursiveReverse(head->next);
     head->next->next = head;
     head->next = NULL;
     return newHead;
+}
+
+Node *iterativeReverse(Node *head)
+{
+    Node *prev = NULL, *curr = head;
+    while (curr != NULL)
+    {
+        // Reverse current
+        Node *temp = curr->next;
+        curr->next = prev;
+
+        // Go to next node
+        prev = curr;
+        curr = temp;
+    }
+
+    return prev;
 }
 
 int main()
@@ -52,7 +69,7 @@ int main()
     head->next->next = new Node(3);
     head->next->next->next = new Node(4);
 
-    head = reverseLinkedList(head);
+    head = iterativeReverse(head);
     printList(head);
 
     return 0;
