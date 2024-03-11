@@ -34,5 +34,8 @@ bin/
 *.out
 *.app
 
+# Compiled Java files
+*.class
+
 # VS Code config files
 .vscode/
