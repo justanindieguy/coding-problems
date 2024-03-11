@@ -10,22 +10,24 @@ public class Main {
     sc.close();
   }
 
-  public static void printSpaces(int limit) {
+  private static void printSpaces(int limit) {
     for (int j = 0; j < limit; j++) {
       System.out.print(" ");
     }
   }
 
+  private static void printStars(int limit) {
+    for (int i = 0; i < limit; i++) {
+      System.out.print("*");
+    }
+  }
+
   public static void printPattern(int n) {
     for (int i = 0; i < n; i++) {
-      int totalSpaces = n - i - 1, totalStars = 2 * i + 1;
+      int spaces = n - i - 1, stars = 2 * i + 1;
 
-      printSpaces(totalSpaces);
-
-      for (int j = 0; j < totalStars; j++) {
-        System.out.print("*");
-      }
-
+      printSpaces(spaces);
+      printStars(stars);
       printSpaces(n - i - 1);
 
       System.out.println();
